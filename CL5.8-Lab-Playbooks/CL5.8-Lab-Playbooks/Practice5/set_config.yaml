@@ -1,0 +1,55 @@
+- hosts: leaf1
+  name: Practice5
+  become: yes
+  gather_facts: no
+  ignore_errors: yes
+  tasks:
+    - name: leaf1 set configuration 
+      copy:
+        src: ./leaf1.yaml
+        dest: /etc/nvue.d/startup.yaml
+    # aktivieren
+    - name: activate changes leaf1
+      shell:  nv config apply startup -y
+
+- hosts: leaf2
+  name: Practice5
+  become: yes
+  gather_facts: no
+  ignore_errors: yes
+  tasks:
+    - name: leaf2 set configuration 
+      copy:
+        src: ./leaf2.yaml
+        dest: /etc/nvue.d/startup.yaml
+    # aktivieren
+    - name: activate changes leaf2
+      shell:  nv config apply startup -y
+
+- hosts: spine3
+  name: Practice5
+  become: yes
+  gather_facts: no
+  ignore_errors: yes
+  tasks:
+    - name: spine3 set configuration 
+      copy:
+        src: ./spine3.yaml
+        dest: /etc/nvue.d/startup.yaml
+    # aktivieren
+    - name: activate changes spine3
+      shell:  nv config apply startup -y
+
+- hosts: spine4
+  name: Practice5
+  become: yes
+  gather_facts: no
+  ignore_errors: yes
+  tasks:
+    - name: spine4 set configuration  
+      copy:
+        src: ./spine4.yaml
+        dest: /etc/nvue.d/startup.yaml
+    # aktivieren
+    - name: activate changes spine4
+      shell:  nv config apply startup -y

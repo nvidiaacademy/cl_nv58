@@ -1,0 +1,41 @@
+- header:
+    model: VX
+    nvue-api-version: nvue_v1
+    rev-id: 1.0
+    version: Cumulus Linux 5.8.0
+- set:
+    interface:
+      lo:
+        ip:
+          address:
+            172.16.100.3/32: {}
+        type: loopback
+      swp1-2:
+        type: swp
+    router:
+      bgp:
+        autonomous-system: 65100
+        enable: on
+        router-id: 172.16.100.3
+    system:
+      config:
+        auto-save:
+          enable: on
+      hostname: spine3
+    vrf:
+      default:
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                network:
+                  172.16.100.3/32: {}
+            enable: on
+            neighbor:
+              swp1:
+                remote-as: external
+                type: unnumbered
+              swp2:
+                remote-as: external
+                type: unnumbered

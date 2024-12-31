@@ -1,0 +1,19 @@
+- header:
+    model: VX
+    nvue-api-version: nvue_v1
+    rev-id: 1.0
+    version: Cumulus Linux 5.8.0
+- set:
+    bridge:
+      domain:
+        br_default:
+          vlan:
+            '10': {}
+    interface:
+      swp1-2:
+        bridge:
+          domain:
+            br_default: {}
+        type: swp
+    system:
+      hostname: spine4

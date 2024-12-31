@@ -1,0 +1,125 @@
+- header:
+    model: VX
+    nvue-api-version: nvue_v1
+    rev-id: 1.0
+    version: Cumulus Linux 5.8.0
+- set:
+    bridge:
+      domain:
+        br_default:
+          vlan:
+            '100':
+              vni:
+                '10': {}
+            '200':
+              vni:
+                '20': {}
+    evpn:
+      enable: on
+    interface:
+      lo:
+        ip:
+          address:
+            172.16.100.2/32: {}
+        type: loopback
+      swp1-2,8-9:
+        type: swp
+      swp8:
+        bridge:
+          domain:
+            br_default:
+              access: 100
+      swp9:
+        bridge:
+          domain:
+            br_default:
+              access: 200
+      vlan100:
+        ip:
+          address:
+            172.16.10.253/24: {}
+          vrr:
+            address:
+              172.16.10.254/24: {}
+            mac-address: 00:00:5e:00:01:02
+        vlan: 100
+      vlan100,200:
+        ip:
+          vrf: NVIDIA
+          vrr:
+            enable: on
+            state:
+              up: {}
+        type: svi
+      vlan200:
+        ip:
+          address:
+            172.16.20.253/24: {}
+          vrr:
+            address:
+              172.16.20.254/24: {}
+            mac-address: 00:00:5e:00:01:03
+        vlan: 200
+    nve:
+      vxlan:
+        enable: on
+        source:
+          address: 172.16.100.2
+    router:
+      bgp:
+        autonomous-system: 65102
+        enable: on
+        router-id: 172.16.100.2
+      vrr:
+        enable: on
+    system:
+      config:
+        auto-save:
+          enable: on
+      hostname: leaf2
+    vrf:
+      NVIDIA:
+        evpn:
+          enable: on
+          vni:
+            '4001': {}
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                redistribute:
+                  connected:
+                    enable: on
+                route-export:
+                  to-evpn:
+                    enable: on
+            autonomous-system: 65102
+            enable: on
+            router-id: 172.16.100.2
+      default:
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                network:
+                  172.16.28.0/24: {}
+                  172.16.29.0/24: {}
+                  172.16.100.2/32: {}
+              l2vpn-evpn:
+                enable: on
+            enable: on
+            neighbor:
+              swp1:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: external
+                type: unnumbered
+              swp2:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: external
+                type: unnumbered

@@ -1,0 +1,57 @@
+- header:
+    model: VX
+    nvue-api-version: nvue_v1
+    rev-id: 1.0
+    version: Cumulus Linux 5.8.0
+- set:
+    bridge:
+      domain:
+        br_default:
+          stp:
+            priority: 4096
+          vlan:
+            2-3: {}
+    interface:
+      LEAF1:
+        bond:
+          member:
+            swp2: {}
+          mlag:
+            id: 1
+      LEAF1-2:
+        bond:
+          mlag:
+            enable: on
+        bridge:
+          domain:
+            br_default: {}
+        type: bond
+      LEAF2:
+        bond:
+          member:
+            swp1: {}
+          mlag:
+            id: 2
+      peerlink:
+        bond:
+          member:
+            swp3: {}
+            swp4: {}
+        type: peerlink
+      peerlink.4094:
+        base-interface: peerlink
+        type: sub
+        vlan: 4094
+    mlag:
+      backup:
+        192.168.200.4:
+          vrf: mgmt
+      enable: on
+      init-delay: 15
+      mac-address: 44:38:39:FF:00:01
+      priority: 2000
+    system:
+      config:
+        auto-save:
+          enable: on
+      hostname: spine4
